@@ -130,12 +130,12 @@ pub fn QuadTree(comptime ObjectType: type, opt: TreeOption) type {
         }
 
         /// Query for objects which could potentially interfect with given rectangle
-        pub fn query(self: *Tree, rect: jok.Rectangle, results: *std.array_list.Managed(ObjectType)) !void {
+        pub fn query(self: *Tree, rect: jok.Rectangle, padding: f32, results: *std.array_list.Managed(ObjectType)) !void {
             var stack = try std.ArrayList(*const TreeNode).initCapacity(self.allocator, 10);
             defer stack.deinit(self.allocator);
             try stack.append(self.allocator, self.root);
             while (stack.pop()) |node| {
-                if (!rect.hasIntersection(node.getRect())) continue;
+                if (!rect.padded(padding).hasIntersection(node.getRect())) continue;
                 if (node.* == .leaf) {
                     for (node.leaf.objs.items) |o| try results.append(o);
                 } else {

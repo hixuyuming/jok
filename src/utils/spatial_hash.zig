@@ -92,8 +92,8 @@ pub fn SpatialHash(comptime ObjectType: type, opt: SpatialOption) type {
             }
         }
 
-        pub fn query(self: HashTable, rect: jok.Rectangle, results: *std.array_list.Managed(ObjectType)) !void {
-            if (self.spatial_rect.intersectRect(rect)) |r| {
+        pub fn query(self: HashTable, rect: jok.Rectangle, padding: f32, results: *std.array_list.Managed(ObjectType)) !void {
+            if (self.spatial_rect.intersectRect(rect.padded(padding))) |r| {
                 var p1: jok.Point = .{ .x = r.x, .y = r.y };
                 var p2: jok.Point = .{ .x = @max(r.x, r.x + r.width - 1), .y = r.y };
                 while (self.hash(p1)) |k1| {

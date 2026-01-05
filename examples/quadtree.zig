@@ -131,7 +131,7 @@ pub fn draw(ctx: jok.Context) !void {
             .width = query_size.getWidthFloat(),
             .height = query_size.getHeightFloat(),
         };
-        try qtree.query(query_rect, &query_result);
+        try qtree.query(query_rect, 0, &query_result);
     }
 
     var b = try batchpool.new(.{ .depth_sort = .back_to_forth });
